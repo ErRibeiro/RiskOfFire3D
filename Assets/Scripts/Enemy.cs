@@ -5,11 +5,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float health = 400f;
+    private float health = 400f; //this hp can be changed in the inspector
     public void takeDamage(float amount)
     {
-        health -= amount;
-        if (health<=0f)
+        health -= amount; //ammount is dependent on the damage which is on the GunBehaviour script
+        if (health<=0f) //checks if health is 0 and kills the object attached to this script
         {
             Die();
         }
@@ -19,4 +19,3 @@ public class Enemy : MonoBehaviour
         }
     }
 }
-// This script will be applied to all enemies. What is does is it gives them a certain amount of hp which I can change in the inspector and it will also take hp away depending on the gun damage found in the gun script
