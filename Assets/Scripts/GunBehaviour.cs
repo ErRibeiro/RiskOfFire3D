@@ -14,7 +14,7 @@ public class GunBehaviour : MonoBehaviour
     private ParticleSystem MuzzleFlash;
     public GameObject Aim;
     [SerializeField]
-    private float fireRate = 20f;
+    public float fireRate = 20f;
     [SerializeField]
     private GameObject HitWorld;
     [SerializeField]
