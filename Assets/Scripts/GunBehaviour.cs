@@ -35,22 +35,26 @@ public class GunBehaviour : MonoBehaviour
     {
         MuzzleFlash.Play();
         RaycastHit hit;
-        if (Physics.Raycast(Aim.transform.position, Aim.transform.forward, out hit))             //sends out a ray cast and looks for a target who has a script called Enemy
-        {                                                                                        //applies damage by sending the damage to another script and plays/destroys a particle effect
-            Debug.Log(hit.transform.name);                                                       //else plays particle effect for hitting the world instead of an enemy
+        //sends out a ray cast and looks for a target who has a script called Enemy
+        if (Physics.Raycast(Aim.transform.position, Aim.transform.forward, out hit))             
+        {                                                                                        
+            Debug.Log(hit.transform.name);                                                       
             Enemy enemy = hit.transform.GetComponent<Enemy>();      
             if (enemy != null)
             {
+                //applies damage by sending the damage to another script and plays/destroys a particle effect
                 enemy.takeDamage(damage);
                 GameObject impactEnemy = Instantiate(HitEnemy, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactEnemy, 2f);
             }
             else
             {
+                //else plays particle effect for hitting the world instead of an enemy
                 GameObject impactWorld = Instantiate(HitWorld, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactWorld, 2f);
             }
-            if (hit.rigidbody !=null)      //applies impact force to the target
+                //applies impact force to the target
+            if (hit.rigidbody !=null)      
             {
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
