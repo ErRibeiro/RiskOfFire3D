@@ -22,7 +22,7 @@ public class GunBehaviour : MonoBehaviour
 
     private float nextTimetoFire = 0f;
    
-    void Update()
+    void Update()//when I press LMB and if I can shoot depending on the next time to fire, you are redirected to shoot() and sets the fire rate
     {
         if (Input.GetMouseButton(0) && Time.time >= nextTimetoFire)
         {
@@ -31,7 +31,7 @@ public class GunBehaviour : MonoBehaviour
         }
 
     }
-    void Shoot()
+    void Shoot()//Plays the particle effects and deals damage to enemies by using a ray cast
     {
         MuzzleFlash.Play();
         RaycastHit hit;
@@ -45,12 +45,16 @@ public class GunBehaviour : MonoBehaviour
                 GameObject impactEnemy = Instantiate(HitEnemy, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactEnemy, 2f);
             }
+            else
+            {
+                GameObject impactWorld = Instantiate(HitWorld, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(impactWorld, 2f);
+            }
             if (hit.rigidbody !=null)
             {
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
-            GameObject impactWorld = Instantiate(HitWorld, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactWorld, 2f);
+           
         }
         
     }

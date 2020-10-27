@@ -19,3 +19,4 @@ public class Enemy : MonoBehaviour
         }
     }
 }
+// This script will be applied to all enemies. What is does is it gives them a certain amount of hp which I can change in the inspector and it will also take hp away depending on the gun damage found in the gun script
