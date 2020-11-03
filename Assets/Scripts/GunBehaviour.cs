@@ -9,7 +9,7 @@ public class GunBehaviour : MonoBehaviour
 
 
     [SerializeField]
-    private float impactForce = 30f;
+    private float impactForce = 2f;
     [SerializeField]
     private ParticleSystem MuzzleFlash;
     public GameObject Aim;

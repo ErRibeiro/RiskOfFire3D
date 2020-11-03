@@ -11,8 +11,11 @@ public class EnemyBehaviour : MonoBehaviour
     private bool follow ;
     private Vector3 playerV3;
     [SerializeField]
-    private float speed = 3;
+    private float speed = 10;
     private float step;
+
+    private Transform lookPos;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +25,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         playerV3 = Player.transform.position;
         distance = Vector3.Distance(Player.transform.position, this.transform.position);
         if (distance > Followdistance)
@@ -36,6 +40,9 @@ public class EnemyBehaviour : MonoBehaviour
         {
             follow = false;
         }
+        
+
+        var rotation = Quaternion.LookRotation(playerV3 - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime);
     }
-    
 }
