@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
+    private int isMoving = Animator.StringToHash("isMoving");
+    private Animator animator;
+
     //Assingables
     public Transform playerCam;
     public Transform orientation;
+    public Transform PlayerSkin;
     
     //Other
     private Rigidbody rb;
@@ -16,7 +20,7 @@ public class PlayerMovement : MonoBehaviour {
     private float xRotation;
     private float sensitivity = 50f;
     private float sensMultiplier = 1f;
-    
+
     //Movement
     public float moveSpeed = 4500;
     public float maxSpeed = 20;
@@ -27,11 +31,7 @@ public class PlayerMovement : MonoBehaviour {
     private float threshold = 0.01f;
     public float maxSlopeAngle = 35f;
 
-    //Crouch & Slide
-    private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
-    private Vector3 playerScale;
-    public float slideForce = 400;
-    public float slideCounterMovement = 0.2f;
+    
 
     //Jumping
     private bool readyToJump = true;
@@ -51,9 +51,10 @@ public class PlayerMovement : MonoBehaviour {
     }
     
     void Start() {
-        playerScale =  transform.localScale;
+        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        animator = GetComponentInChildren<Animator>();
     }
 
     
@@ -64,38 +65,28 @@ public class PlayerMovement : MonoBehaviour {
     private void Update() {
         MyInput();
         Look();
+        if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
+        {
+            animator.SetFloat(isMoving, 1);
+        }
+        else { animator.SetFloat(isMoving, 0); }
     }
 
     /// <summary>
     /// Find user input. Should put this in its own class but im lazy
     /// </summary>
-    private void MyInput() {
+    private void MyInput()
+    {
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
         jumping = Input.GetButton("Jump");
-        crouching = Input.GetKey(KeyCode.LeftControl);
-      
-        //Crouching
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-            StartCrouch();
-        if (Input.GetKeyUp(KeyCode.LeftControl))
-            StopCrouch();
+        
+
     }
 
-    private void StartCrouch() {
-        transform.localScale = crouchScale;
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        if (rb.velocity.magnitude > 0.5f) {
-            if (grounded) {
-                rb.AddForce(orientation.transform.forward * slideForce);
-            }
-        }
-    }
+   
 
-    private void StopCrouch() {
-        transform.localScale = playerScale;
-        transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-    }
+   
 
     private void Movement() {
         //Extra gravity
@@ -141,6 +132,7 @@ public class PlayerMovement : MonoBehaviour {
         //Apply forces to move player
         rb.AddForce(orientation.transform.forward * y * moveSpeed * Time.deltaTime * multiplier * multiplierV);
         rb.AddForce(orientation.transform.right * x * moveSpeed * Time.deltaTime * multiplier);
+        
     }
 
     private void Jump() {
@@ -180,18 +172,17 @@ public class PlayerMovement : MonoBehaviour {
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         //Perform the rotations
+        
         playerCam.transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0);
         orientation.transform.localRotation = Quaternion.Euler(0, desiredX, 0);
+        PlayerSkin.transform.RotateAround(playerCam.transform.position, Vector3.up, mouseX);
+        this.transform.RotateAround(playerCam.transform.position, Vector3.up, mouseX);
     }
 
     private void CounterMovement(float x, float y, Vector2 mag) {
         if (!grounded || jumping) return;
 
-        //Slow down sliding
-        if (crouching) {
-            rb.AddForce(moveSpeed * Time.deltaTime * -rb.velocity.normalized * slideCounterMovement);
-            return;
-        }
+        
 
         //Counter movement
         if (Math.Abs(mag.x) > threshold && Math.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0)) {
@@ -266,5 +257,4 @@ public class PlayerMovement : MonoBehaviour {
     private void StopGrounded() {
         grounded = false;
     }
-    
 }

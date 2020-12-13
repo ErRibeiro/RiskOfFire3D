@@ -39,13 +39,15 @@ public class GunBehaviour : MonoBehaviour
         if (Physics.Raycast(Aim.transform.position, Aim.transform.forward, out hit))             
         {                                                                                        
             Debug.Log(hit.transform.name);                                                       
-            Enemy enemy = hit.transform.GetComponent<Enemy>();      
+            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            
             if (enemy != null)
             {
                 //applies damage by sending the damage to another script and plays/destroys a particle effect
                 enemy.takeDamage(damage);
                 GameObject impactEnemy = Instantiate(HitEnemy, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactEnemy, 2f);
+               
             }
             else
             {

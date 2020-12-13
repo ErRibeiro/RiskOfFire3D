@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/RiskOfFire3D.unity
+    guid: 52776ab5af45a374a9689bd5b910a19c
   m_configObjects: {}
