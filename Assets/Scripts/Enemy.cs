@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float health = 400f;
     private GameObject Spawns;
-    private SpawnManager sm;
+    private SpawnManager sm; 
     public void Start()
     {
         Spawns = GameObject.FindWithTag("SpawnArea");

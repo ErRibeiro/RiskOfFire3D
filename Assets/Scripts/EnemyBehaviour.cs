@@ -19,7 +19,7 @@ public class EnemyBehaviour : MonoBehaviour
     public GameObject MAim;
     
     public float fireRate = 1f;
-    private float nextTimetoFire = 10f;
+    private float nextTimetoFire = 1f;
     
     private bool shooting = false;
     private Transform lookPos;
